@@ -7,6 +7,13 @@ import numpy as np
 
 
 def sobel_edge_with_gaussian(image,edge_fil_x,edge_fil_y):
+    '''
+    Convolution with Sobel filter
+    :param image: input image
+    :param edge_fil_x: horizontal edge detecting filter
+    :param edge_fil_y: vertical edge detecting filter
+    :return: (derivatives) edge detected images
+    '''
 
     sobel_x = fft_with_gaussian(image, edge_fil_x)
 
@@ -15,6 +22,13 @@ def sobel_edge_with_gaussian(image,edge_fil_x,edge_fil_y):
     return sobel_x, sobel_y
 
 def gradient(sobel_x, sobel_y):
+    '''
+    Find the intensity gradients i.e, magnitude and angle of gradients
+    :param sobel_x: derivative in x-direction
+    :param sobel_y: derivative in y-direction
+    :return: magnitude and angle of directional gradients
+    '''
+
 
     grad_mag = np.sqrt(np.square(sobel_x) + np.square(sobel_y))
     grad_mag = grad_mag*255.0 / grad_mag.max()
@@ -28,6 +42,14 @@ def gradient(sobel_x, sobel_y):
     return grad_mag, gradient_direction
 
 def non_max_suppression_with_threshold_and_hystersis(grad_mag, grad_dir):
+    '''
+    Non maximum suppression to thin out the edges
+    Double thresholding to remove noise
+    Hysteresis to determine weak and actual edges
+    :param grad_mag: magnitude of gradient
+    :param grad_dir: angle of gradient
+    :return: Image with thin edges
+    '''
     M, N = grad_mag.shape
     I = np.zeros((M, N), dtype=np.int32)
 
@@ -60,7 +82,7 @@ def non_max_suppression_with_threshold_and_hystersis(grad_mag, grad_dir):
                     I[i, j] = 0
 
                 # double thresholding
-                ###### low and high are respective thresholds
+                ##### low and high are respective thresholds
                 high = 40
                 low = 5
                 if I[i,j] >= high :
@@ -80,39 +102,3 @@ def non_max_suppression_with_threshold_and_hystersis(grad_mag, grad_dir):
     return I
 
 
-'''
-cap = cv2.VideoCapture('sample.mp4')
-print(cap.get(cv2.CAP_PROP_POS_MSEC))
-print(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-print(cap.get(cv2.CAP_PROP_FPS))
-# Define the codec and create VideoWriter object
-fourcc = cv2.VideoWriter_fourcc(*'FMP4')
-out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (400,226))
-edge_fil_x = np.asarray([[-1, 0, 1],
-                         [-2, 0, 2],
-                         [-1, 0, 1]])
-edge_fil_y = np.flip(edge_fil_x.T, axis=0)
-
-while(cap.isOpened()):
-    ret, frame = cap.read()
-    if ret==True:
-        grayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        g_x, g_y = sobel_edge_with_gaussian(grayFrame)
-        g, d = gradient(g_x, g_y)
-        V = non_max_suppression_with_threshold_and_hystersis(g, d)
-        V = np.array(V, dtype=np.float32)
-
-        # write the flipped frame
-        currentframe=+1
-        out.write(cv2.cvtColor(V, cv2.COLOR_GRAY2BGR))
-
-        cv2.imshow('frame',V)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    else:
-        break
-
-# Release everything if job is finished
-cap.release()
-out.release()
-cv2.destroyAllWindows()'''
