@@ -10,11 +10,13 @@ Python packages/libraries used:
 
 files:
 1. GUI.py
+
 2.Canny_v.py
+
 3.fft_convolution_v.py
 
 
-Main file(to be executed first) - GUI.py
+Main file (to be executed first) - GUI.py
 
 PRESS 'CONVERT' in the GUI to start edge detection process.
 
