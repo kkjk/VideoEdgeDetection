@@ -8,6 +8,15 @@ import numpy.fft as fp
 
 
 def gaussiankernel(imageshape,sigma=1.4, k_size=3):   ### k_size is the gaussian kernel size
+    '''
+Creating Gaussian kernel from distribution
+Parameters:
+    imageshape- spatial dimensions
+    sigma = standard deviation of Gaussian distribution
+    k_size = size of kernel
+Returns:
+    gaussian kernel according to image shape
+    '''
 
     # sigma, k_size = 2, 3
     k_size = int(k_size/2)
@@ -22,6 +31,15 @@ def gaussiankernel(imageshape,sigma=1.4, k_size=3):   ### k_size is the gaussian
 
 
 def fft_with_gaussian(image, kernel):
+
+    '''
+Fast fourier tranform with Gaussian kernel (convolution in time domain = multiplication in freq. domain)
+Parameters:
+    image - input image
+    kernel - Gaussian kernel
+Returns:
+    convolution of input image with the gaussian kernel
+    '''
     # kernel = gaussiankernel(2, 3)
     # print(kernel)
     ## Embed kernel in image that is size of original image
@@ -43,26 +61,35 @@ def fft_with_gaussian(image, kernel):
     return req_img
 
 def fft(image, kernel):
-        # kernel = gaussiankernel(2, 3)
-        # print(kernel)
-        ## Embed kernel in image that is size of original image
-        kernelimage = np.zeros(image.shape)  # image shape is 2250, 4000
-        kernelimage[0:3, 0:3] = kernel
+    '''
+Fast fourier tranform with kernel
+Parameters:
+    image - input image
+    kernel - filters like sobel-x, sobel-y, etc..
+Returns:
+    convolution of input image with the given kernel
+    '''
 
-        #### 2d fft ################
-        fimg = fp.fft2(image)
-        fkernel = fp.fft2(kernelimage)
-        #####  Set all zero values to minimum value
-        # fkernel[abs(fkernel) < 1e-6] = 1e-6
+    # kernel = gaussiankernel(2, 3)
+    # print(kernel)
+    ## Embed kernel in image that is size of original image
+    kernelimage = np.zeros(image.shape)  # image shape is 2250, 4000
+    kernelimage[0:3, 0:3] = kernel
 
-        ### multiply fft
-        f_req_img = fimg * fkernel
-        # print(np.max(fblurimg))
+    #### 2d fft ################
+    fimg = fp.fft2(image)
+    fkernel = fp.fft2(kernelimage)
+    #####  Set all zero values to minimum value
+    # fkernel[abs(fkernel) < 1e-6] = 1e-6
 
-        req_img = fp.ifft2(f_req_img).real
-        # print(np.max(blurimg))
-        req_img = req_img / 255.0
-        return req_img
+    ### multiply fft
+    f_req_img = fimg * fkernel
+    # print(np.max(fblurimg))
+
+    req_img = fp.ifft2(f_req_img).real
+    # print(np.max(blurimg))
+    req_img = req_img / 255.0
+    return req_img
 
 
 
