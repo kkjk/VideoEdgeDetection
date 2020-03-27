@@ -28,3 +28,5 @@ Note:
 
 2. low and high thresholds for double threshold step in Canny Edge detection have been hard coded.They can be 
 changed in the non_max_suppression_with_threshold_and_hystersis() function (high, low)
+
+3. sample_video.mp4 file can be used to check the working 
