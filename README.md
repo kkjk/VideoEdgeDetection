@@ -9,7 +9,8 @@ Python packages/libraries used:
 
 
 files:
-1. GUI.py
+
+1.GUI.py
 
 2.Canny_v.py
 
