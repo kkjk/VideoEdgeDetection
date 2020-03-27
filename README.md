@@ -8,7 +8,7 @@ Python packages/libraries used:
 -pyqt5 for the GUI
 
 
-files:
+Files:
 
 1.GUI.py
 
