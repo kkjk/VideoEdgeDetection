@@ -3,9 +3,9 @@
 **Canny Edge Detector without predefined functions from opencv like Canny, GaussianBlur,..**
 
 ## Python packages/libraries used:
--`OpenCV` (only for opening/closing video files )
--`numpy` (for fourier transforms and array manipulation)
--`PyQt5` for the GUI
+- `OpenCV` (only for opening/closing video files )
+- `numpy` (for fourier transforms and array manipulation)
+- `PyQt5` for the GUI
 
 
 ## Usage
